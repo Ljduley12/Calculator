@@ -1,0 +1,39 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.gradient-bg {
+    background: linear-gradient(to bottom, red, blue);
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+
+.content {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#solution {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
