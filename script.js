@@ -5,55 +5,43 @@ document.addEventListener("DOMContentLoaded", function () {
     const conversationArea = document.getElementById("conversationArea");
 
     solveButton.addEventListener("click", function () {
-        const problem = problemInput.value;
-        const solution = solveWordProblem(problem);
-        solutionDiv.textContent = `Solution: ${solution}`;
-        addQuestionToConversation(problem);
-        addAnswerToConversation(solution);
+        const input = problemInput.value;
+        if (input.endsWith("?")) {
+            // If the input ends with a question mark, treat it as a question.
+            addQuestionToConversation(input);
+            const answer = answerQuestion(input);
+            addAnswerToConversation(answer);
+        } else {
+            // Otherwise, treat it as a math problem.
+            addQuestionToConversation(input);
+            const solution = solveMathProblem(input);
+            addAnswerToConversation(`Solution: ${solution}`);
+        }
     });
 
-    function solveWordProblem(problem) {
-        // Convert problem to lowercase for case-insensitive matching
-        const problemLower = problem.toLowerCase();
-
-        if (problemLower.includes("sum") || problemLower.includes("addition")) {
-            return performOperation(problem, "+");
-        } else if (problemLower.includes("difference") || problemLower.includes("subtraction")) {
-            return performOperation(problem, "-");
-        } else if (problemLower.includes("product") || problemLower.includes("multiply")) {
-            return performOperation(problem, "*");
-        } else if (problemLower.includes("division") || problemLower.includes("divide")) {
-            return performOperation(problem, "/");
+    function answerQuestion(question) {
+        // Simple predefined set of responses for sample questions.
+        const questionLower = question.toLowerCase();
+        if (questionLower.includes("who") && questionLower.includes("you")) {
+            return "I am a bot that can answer questions and solve math problems.";
+        } else if (questionLower.includes("how") && questionLower.includes("are") && questionLower.includes("you")) {
+            return "I'm just a computer program, so I don't have feelings, but I'm here to help!";
         } else {
-            return "Unable to solve. Please provide a valid word problem.";
+            return "I don't know the answer to that question.";
         }
     }
 
-    function performOperation(problem, operator) {
-        // Use regular expressions to extract numbers and the operator
-        const regex = new RegExp(`(-?\\d+\\.?\\d*)\\s*${operator}\\s*(-?\\d+\\.?\\d*)`);
-        const match = problem.match(regex);
-
-        if (match && match.length === 3) {
-            const num1 = parseFloat(match[1]);
-            const num2 = parseFloat(match[2]);
-
-            switch (operator) {
-                case "+":
-                    return num1 + num2;
-                case "-":
-                    return num1 - num2;
-                case "*":
-                    return num1 * num2;
-                case "/":
-                    if (num2 === 0) {
-                        return "Division by zero is not allowed.";
-                    }
-                    return num1 / num2;
+    function solveMathProblem(problem) {
+        try {
+            // Use JavaScript's built-in eval function to solve math problems.
+            const solution = eval(problem);
+            if (isNaN(solution)) {
+                return "Invalid math expression.";
             }
+            return solution;
+        } catch (error) {
+            return "Error: " + error.message;
         }
-
-        return "Unable to solve. Please provide a valid word problem.";
     }
 
     function addQuestionToConversation(question) {
